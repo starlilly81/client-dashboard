@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Once Upon A Chair: Account Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FAF6F7;--sf:#fff;--ink:#2A1220;--mu:#6E5A64;--ln:#E8DDE1;--brand:#470E2A;--ac:#D61B5D;--up:#13795B;--dn:#B8322A;--wip:#E26A2C;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1A0F16;--sf:#26171F;--ink:#F5ECF0;--mu:#B9A6B0;--ln:#3D2A35;--brand:#F5ECF0;--ac:#F0508A;--up:#4CC9A0;--dn:#FF8A80;--wip:#F08A4B}}
+:root[data-theme="dark"]{--bg:#1A0F16;--sf:#26171F;--ink:#F5ECF0;--mu:#B9A6B0;--ln:#3D2A35;--brand:#F5ECF0;--ac:#F0508A;--up:#4CC9A0;--dn:#FF8A80;--wip:#F08A4B}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Figtree,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.45}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 16px 60px}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;border-bottom:4px solid var(--ac);padding-bottom:12px}
+.top h1{margin:0;font-size:clamp(1.6rem,4vw,2.3rem);color:var(--brand);font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.top p{margin:4px 0 0;color:var(--mu)}
+.tag{font-size:.8rem;color:var(--mu);text-align:right}
+h2{font-size:1.25rem;margin:34px 0 10px;color:var(--brand)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:18px}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:14px 16px;min-width:0}
+.card .l{color:var(--mu);font-size:.85rem}.card .v{font-size:1.9rem;font-weight:800;line-height:1.2}
+.bar{height:10px;background:var(--ln);border-radius:5px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:var(--ac);transition:width .3s}
+.focus{border-left:6px solid var(--ac)}
+.focus ol{margin:6px 0 0;padding-left:20px}.focus li{margin:4px 0}
+.banner{margin-top:14px;padding:10px 14px;border-radius:6px;background:var(--sf);border:1px dashed var(--ac);font-size:.9rem}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+button,select,input{font:inherit;color:inherit}
+.chip{border:1px solid var(--ln);background:var(--sf);border-radius:999px;padding:5px 12px;cursor:pointer;font-size:.88rem}
+.chip[aria-pressed="true"]{background:var(--brand);color:var(--bg);border-color:var(--brand)}
+.task{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start;background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:10px 12px;margin-bottom:8px}
+.task.done .ti{text-decoration:line-through;color:var(--mu)}
+.st{border:0;border-radius:999px;padding:4px 12px;font-weight:700;font-size:.8rem;cursor:pointer;white-space:nowrap;color:#fff}
+.st.todo{background:var(--mu)}.st.doing{background:var(--wip)}.st.done{background:var(--up)}
+.ti{width:100%;border:0;background:transparent;font-weight:700;padding:2px 0}
+.ti:focus,.nt:focus,.cell:focus{outline:2px solid var(--ac);outline-offset:1px}
+.nt{width:100%;border:0;background:transparent;color:var(--mu);font-size:.88rem;padding:2px 0}
+.meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;font-size:.78rem}
+.pill{border-radius:4px;padding:1px 7px;border:1px solid var(--ln);color:var(--mu)}
+.pill.High{border-color:var(--ac);color:var(--ac)}
+.x{border:0;background:none;color:var(--mu);cursor:pointer;font-size:1.2rem;line-height:1}
+.add{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:8px;margin:12px 0}
+.add input,.add select{border:1px solid var(--ln);background:var(--sf);border-radius:6px;padding:8px 10px;min-width:0}
+.add button{background:var(--ac);color:#fff;border:0;border-radius:6px;padding:8px 16px;font-weight:700;cursor:pointer}
+.ghost{background:none;border:1px solid var(--ac);color:var(--ac);border-radius:6px;padding:8px 14px;font-weight:700;cursor:pointer}
+.scroll{overflow-x:auto;background:var(--sf);border:1px solid var(--ln);border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:.9rem}
+th,td{padding:7px 8px;border-bottom:1px solid var(--ln);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left;position:sticky;left:0;background:var(--sf)}
+th{color:var(--mu);font-size:.8rem}
+.cell{width:70px;text-align:right;border:1px solid transparent;background:transparent;border-radius:4px;padding:3px 4px}
+.cell:hover{border-color:var(--ln)}
+.up{color:var(--up);font-weight:700}.dn{color:var(--dn);font-weight:700}.fl{color:var(--mu)}
+.mini{width:70px;display:inline-block;vertical-align:middle}
+.hint{color:var(--mu);font-size:.85rem;margin-top:6px}
+@media (max-width:640px){.add{grid-template-columns:1fr 1fr}.add input:first-child{grid-column:1/-1}.add button{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="top"><div><h1>Once Upon A Chair Rental Co.</h1><p>Account dashboard: what I’m working on and how it’s going</p></div><div class="tag" id="sync"></div></div>
+<div id="banner"></div>
+
+<div class="grid" id="stats"></div>
+<div class="card focus" style="margin-top:12px"><b>Working on now</b><ol id="focus"></ol></div>
+
+<h2>Priorities and tasks</h2>
+<div class="chips" id="chips"></div>
+<div id="tasks"></div>
+<div class="add">
+  <input id="nTitle" placeholder="New task" aria-label="New task">
+  <select id="nPri" aria-label="Priority"><option>High</option><option selected>Medium</option><option>Low</option></select>
+  <select id="nMonth" aria-label="Month"></select>
+  <button id="nAdd">Add task</button>
+</div>
+
+<h2>Is it working? Monthly scorecard</h2>
+<div class="scroll"><table id="score"></table></div>
+<p class="hint">Click any number to type this month’s result. It saves automatically. “Change” compares the latest month with October.</p>
+</div>
+
+<script>
+const MONTHS=[["2026-10","Oct"],["2026-11","Nov"],["2026-12","Dec"],["2027-01","Jan"]];
+const TMONTHS=["Nov","Dec","Jan","Ongoing"];
+const PW={High:0,Medium:1,Low:2};
+const SEED=[
+ ["Fix conversion tracking (real leads only) in GA and Google Ads","High","Nov","GA shows 597 cart events vs 45 ads conversions. Nothing else can be judged until this is right."],
+ ["Fix Google Business Profile and ask for reviews after every event","High","Nov","Local pack coverage is 2.9%."],
+ ["Build tent rentals and party rentals pages","High","Dec","Highest-volume gaps. Competitors rank top 10."],
+ ["Improve table and chair and chair rentals pages (mobile, speed)","Medium","Dec","Table and chair is #3 desktop but missing on mobile. Chair rentals is #15."],
+ ["Fix ad budget and impression share","Medium","Dec","Campaign is limited by budget. Impression share on table and chair fell 51% to 44%."],
+ ["Build content for AI search visibility (FAQs, plain answers)","Medium","Jan","AI score is 30, down 20.9."],
+ ["Add city pages (Palm Coast, Fernandina Beach, Gainesville, St. Augustine)","Medium","Jan",""],
+ ["Clean up Yelp, Facebook and The Knot listings","Low","Jan","Name, phone and details should match everywhere."]
+];
+const METRICS=[
+ {id:"top10",label:"Top-10 desktop keywords",lo:0,goal:14,v:{"2026-10":9}},
+ {id:"pos",label:"Avg. Google position",lo:1,goal:null,v:{"2026-10":30.6}},
+ {id:"lp",label:"Local pack coverage (%)",lo:0,goal:null,v:{"2026-10":2.9}},
+ {id:"ai",label:"AI visibility score",lo:0,goal:40,v:{"2026-10":30.5}},
+ {id:"is",label:"Ad impression share (%)",lo:0,goal:48,v:{"2026-10":41}},
+ {id:"conv",label:"Ad conversions",lo:0,goal:null,v:{"2026-10":45}},
+ {id:"cpc",label:"Cost per conversion ($)",lo:1,goal:null,v:{"2026-10":55.89}},
+ {id:"users",label:"Active users",lo:0,goal:null,v:{"2026-10":1300}},
+ {id:"sess",label:"Sessions",lo:0,goal:null,v:{"2026-10":1828}}
+];
+let db=null,tasks=[],metrics=METRICS,filter="All",loaded=false;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const uid=()=>"t"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const NEXT={todo:"doing",doing:"done",done:"todo"},LBL={todo:"To do",doing:"In progress",done:"Done"};
+
+async function saveTask(t){ if(db){try{await db.collection("tasks").doc(t.id).set(t)}catch(e){banner("Couldn’t save that change. Try again.")}} }
+async function saveMetrics(){ if(db){try{await db.doc("meta/metrics").set({rows:metrics})}catch(e){banner("Couldn’t save the scorecard.")}} }
+function banner(m){$("banner").innerHTML=m?`<div class="banner">${esc(m)}</div>`:""}
+
+function sorted(){return tasks.slice().sort((a,b)=>(a.status==="done")-(b.status==="done")||PW[a.priority]-PW[b.priority]||(a.rank||0)-(b.rank||0))}
+
+function render(){
+  const n=tasks.length,d=tasks.filter(t=>t.status==="done").length,w=tasks.filter(t=>t.status==="doing").length,pct=n?Math.round(d/n*100):0;
+  $("stats").innerHTML=`<div class="card"><div class="l">Overall progress</div><div class="v">${pct}%</div><div class="bar"><i style="width:${pct}%"></i></div></div>
+   <div class="card"><div class="l">In progress</div><div class="v" style="color:var(--wip)">${w}</div></div>
+   <div class="card"><div class="l">To do</div><div class="v">${n-d-w}</div></div>
+   <div class="card"><div class="l">Done</div><div class="v" style="color:var(--up)">${d}</div></div>`;
+  const open=sorted().filter(t=>t.status!=="done");
+  const foc=open.filter(t=>t.status==="doing").concat(open.filter(t=>t.status==="todo")).slice(0,3);
+  $("focus").innerHTML=foc.length?foc.map(t=>`<li>${esc(t.title)} <span class="pill ${t.priority}">${t.priority}</span></li>`).join(""):`<li style="list-style:none;color:var(--mu)">${n?"Everything is done. Nice work.":"No tasks yet."}</li>`;
+  $("chips").innerHTML=["All"].concat(TMONTHS).map(m=>`<button class="chip" aria-pressed="${filter===m}" data-f="${m}">${m}</button>`).join("");
+  const list=sorted().filter(t=>filter==="All"||t.month===filter);
+  let h=list.map(t=>`<div class="task ${t.status}" data-id="${t.id}">
+    <button class="st ${t.status}" data-act="st" title="Click to change status">${LBL[t.status]}</button>
+    <div><input class="ti" value="${esc(t.title)}" data-act="title" aria-label="Task">
+    <input class="nt" value="${esc(t.notes)}" placeholder="Add a note" data-act="notes" aria-label="Note">
+    <div class="meta"><span class="pill ${t.priority}">${t.priority}</span><span class="pill">${esc(t.month)}</span></div></div>
+    <button class="x" data-act="del" aria-label="Delete task">×</button></div>`).join("");
+  if(!list.length) h=`<div class="card" style="color:var(--mu)">${loaded&&!n?"No tasks yet. ":"Nothing here. "}${loaded&&!n?`<button class="ghost" id="seed" style="margin-left:8px">Load the 8 priorities from the 3-month plan</button>`:""}</div>`;
+  $("tasks").innerHTML=h;
+  renderScore();
+}
+
+function latest(m){for(let i=MONTHS.length-1;i>=0;i--){const v=m.v[MONTHS[i][0]];if(v!=null&&v!=="")return +v}return null}
+function renderScore(){
+  let h=`<thead><tr><th>Measure</th>${MONTHS.map(m=>`<th>${m[1]}</th>`).join("")}<th>Goal</th><th>Change</th><th>To goal</th></tr></thead><tbody>`;
+  metrics.forEach(m=>{
+    const base=m.v["2026-10"],cur=latest(m);let ch='<span class="fl">–</span>',pg="";
+    if(cur!=null&&base!=null&&MONTHS.some(x=>x[0]!=="2026-10"&&m.v[x[0]]!=null&&m.v[x[0]]!=="")){
+      const diff=Math.round((cur-base)*100)/100,good=m.lo?diff<0:diff>0;
+      ch=diff===0?'<span class="fl">No change</span>':`<span class="${good?"up":"dn"}">${diff>0?"▲":"▼"} ${Math.abs(diff)}</span>`;
+    }
+    if(m.goal!=null&&cur!=null&&base!=null&&m.goal!==base){const p=Math.max(0,Math.min(100,Math.round((cur-base)/(m.goal-base)*100)));pg=`<div class="bar mini"><i style="width:${p}%"></i></div> ${p}%`}
+    h+=`<tr data-m="${m.id}"><td>${esc(m.label)}${m.lo?' <span class="fl" title="Lower is better">↓</span>':""}</td>${MONTHS.map(x=>`<td><input class="cell" inputmode="decimal" data-k="${x[0]}" value="${m.v[x[0]]??""}" aria-label="${esc(m.label)} ${x[1]}"></td>`).join("")}<td><input class="cell" inputmode="decimal" data-k="goal" value="${m.goal??""}" aria-label="Goal"></td><td>${ch}</td><td>${pg}</td></tr>`;
+  });
+  $("score").innerHTML=h+"</tbody>";
+}
+
+document.addEventListener("click",async e=>{
+  const f=e.target.closest("[data-f]");if(f){filter=f.dataset.f;render();return}
+  if(e.target.id==="seed"){const base=Date.now();for(let i=0;i<SEED.length;i++){const s=SEED[i],t={id:uid(),title:s[0],priority:s[1],month:s[2],notes:s[3],status:"todo",rank:i};tasks.push(t);await saveTask(t)}render();return}
+  const row=e.target.closest(".task"),act=e.target.dataset.act;if(!row||!act)return;
+  const t=tasks.find(x=>x.id===row.dataset.id);if(!t)return;
+  if(act==="st"){t.status=NEXT[t.status];await saveTask(t);render()}
+  if(act==="del"){tasks=tasks.filter(x=>x!==t);if(db){try{await db.collection("tasks").doc(t.id).delete()}catch(_){}}render()}
+});
+document.addEventListener("change",async e=>{
+  const row=e.target.closest(".task");
+  if(row){const t=tasks.find(x=>x.id===row.dataset.id);if(!t)return;t[e.target.dataset.act]=e.target.value;await saveTask(t);render();return}
+  const mr=e.target.closest("tr[data-m]");
+  if(mr&&e.target.dataset.k){const m=metrics.find(x=>x.id===mr.dataset.m),k=e.target.dataset.k,v=e.target.value.trim()===""?null:parseFloat(e.target.value);
+    if(k==="goal")m.goal=isNaN(v)?null:v;else{if(v==null||isNaN(v))delete m.v[k];else m.v[k]=v}
+    await saveMetrics();render()}
+});
+$("nAdd").onclick=async()=>{
+  const title=$("nTitle").value.trim();if(!title)return;
+  const t={id:uid(),title,priority:$("nPri").value,month:$("nMonth").value,notes:"",status:"todo",rank:Date.now()};
+  tasks.push(t);$("nTitle").value="";await saveTask(t);render();
+};
+$("nTitle").addEventListener("keydown",e=>{if(e.key==="Enter")$("nAdd").click()});
+$("nMonth").innerHTML=TMONTHS.map(m=>`<option>${m}</option>`).join("");
+
+render();
+(async()=>{
+  try{db=await claude.use("db")}catch(_){db=null}
+  loaded=true;
+  if(!db){banner("Changes won’t be saved in this view. Open the dashboard from your Claude account to keep your work.");render();return}
+  $("sync").textContent="Saved automatically";
+  db.collection("tasks").onSnapshot(s=>{tasks=s.docs.map(d=>({id:d.id,...d.data()}));render()},()=>{banner("Couldn’t load your tasks.")});
+  db.doc("meta/metrics").onSnapshot(s=>{if(s.exists&&s.data().rows){metrics=s.data().rows;renderScore()}},()=>{});
+})();
+</script>
+</body>
+</html>
